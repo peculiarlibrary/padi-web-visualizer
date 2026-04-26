@@ -33,3 +33,10 @@ git clone [https://github.com/peculiarlibrary/padi-web-visualizer.git](https://g
 cd padi-web-visualizer
 # Use a local server to avoid CORS issues with JSON-LD
 python -m http.server 8000
+```
+
+## License
+This project is licensed under the **Apache License 2.0** — preserving the patent and intellectual integrity of the visualizer while encouraging open-source adoption.
+
+---
+> **The Librarian's Insight:** "Logic is invisible until it is mapped. The Visualizer makes the Sovereign Truth undeniable.
