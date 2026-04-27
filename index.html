@@ -1,8 +1,23 @@
 <!DOCTYPE html>
-<html>
-<head><title>PADI Visualizer Node</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PADI Sovereign Bureau | Visualizer</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: #0d1117; font-family: sans-serif; }
+        #overlay {
+            position: absolute; top: 20px; left: 20px; color: #58a6ff;
+            pointer-events: none; text-shadow: 1px 1px 2px #000;
+        }
+        canvas { display: block; }
+    </style>
+</head>
 <body>
-  <h1>PADI Visualizer Node: Operational</h1>
-  <p>Loading Knowledge Graph from: CoderLegion_PADI_Prototype.jsonld</p>
+    <div id="overlay">
+        <h1 style="margin:0;">PADI Sovereign Bureau</h1>
+        <p style="margin:5px 0;">Node: Peculiar Librarian | Kernel: Synchronized</p>
+    </div>
+    <script src="app.js"></script>
 </body>
 </html>
