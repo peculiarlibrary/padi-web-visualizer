@@ -6,13 +6,11 @@ const svg = d3.select("body").append("svg")
     .attr("height", height)
     .style("background", "#0d1117");
 
-// Define the simulation forces
 const simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(d => d.id).distance(100))
-    .force("charge", d3.forceManyBody().strength(-200))
+    .force("link", d3.forceLink().id(d => d.id).distance(120))
+    .force("charge", d3.forceManyBody().strength(-400))
     .force("center", d3.forceCenter(width / 2, height / 2));
 
-// Fetch from the Sovereign Kernel
 d3.json("https://raw.githubusercontent.com/peculiarlibrary/padi-ontology-kernel/main/manifest.json").then(data => {
     
     const nodes = data.assets.map(d => ({ 
@@ -21,7 +19,6 @@ d3.json("https://raw.githubusercontent.com/peculiarlibrary/padi-ontology-kernel/
         group: d.path.split('/')[0] 
     }));
 
-    // Virtual links based on shared directory structure
     const links = [];
     nodes.forEach((a, i) => {
         nodes.forEach((b, j) => {
@@ -36,22 +33,36 @@ d3.json("https://raw.githubusercontent.com/peculiarlibrary/padi-ontology-kernel/
         .data(links)
         .join("line")
         .attr("stroke", "#30363d")
-        .attr("stroke-width", 1.5);
+        .attr("stroke-width", 1);
 
-    const node = svg.append("g")
-        .selectAll("circle")
+    const nodeGroup = svg.append("g")
+        .selectAll("g")
         .data(nodes)
-        .join("circle")
-        .attr("r", 10)
-        .attr("fill", d => d.group === "constraints" ? "#f85149" : "#58a6ff")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 2)
+        .join("g")
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended));
 
-    node.append("title").text(d => `PADI Asset: ${d.name}\nPath: ${d.id}`);
+    // The Node Circle
+    nodeGroup.append("circle")
+        .attr("r", 12)
+        .attr("fill", d => {
+            if (d.group === "constraints") return "#ff7b72"; // Red for rules
+            if (d.group === "ontology") return "#a5d6ff";    // Blue for structure
+            return "#7ee787";                               // Green for others
+        })
+        .attr("stroke", "#f0f6fc")
+        .attr("stroke-width", 2);
+
+    // The Node Label
+    nodeGroup.append("text")
+        .text(d => d.name)
+        .attr("x", 15)
+        .attr("y", 5)
+        .style("fill", "#c9d1d9")
+        .style("font-size", "12px")
+        .style("pointer-events", "none");
 
     simulation.nodes(nodes).on("tick", () => {
         link.attr("x1", d => d.source.x)
@@ -59,8 +70,7 @@ d3.json("https://raw.githubusercontent.com/peculiarlibrary/padi-ontology-kernel/
             .attr("x2", d => d.target.x)
             .attr("y2", d => d.target.y);
 
-        node.attr("cx", d => d.x)
-            .attr("cy", d => d.y);
+        nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
     simulation.force("link").links(links);
