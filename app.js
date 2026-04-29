@@ -104,3 +104,10 @@ function boxConstraints() {
         d.y = Math.max(20, Math.min(window.innerHeight - 20, d.y));
     });
 }
+// Increase centripetal pull to keep clusters visible
+simulation
+    .force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
+    .force("charge", d3.forceManyBody().strength(-150)) // Moderate repulsion
+    .force("x", d3.forceX(window.innerWidth / 2).strength(0.15)) // Stronger X-axis gravity
+    .force("y", d3.forceY(window.innerHeight / 2).strength(0.15)) // Stronger Y-axis gravity
+    .alpha(1).restart(); // Wake up the simulation
