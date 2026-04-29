@@ -90,3 +90,17 @@ d3.json("https://raw.githubusercontent.com/peculiarlibrary/padi-ontology-kernel/
         event.subject.fy = null;
     }
 });
+
+// PADI A2UI: Force Anchor & Viewport Bounding
+simulation
+    .force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
+    .force("x", d3.forceX(window.innerWidth / 2).strength(0.1))
+    .force("y", d3.forceY(window.innerHeight / 2).strength(0.1));
+
+// Keep nodes within the visible bounds of the screen
+function boxConstraints() {
+    nodes.forEach(d => {
+        d.x = Math.max(20, Math.min(window.innerWidth - 20, d.x));
+        d.y = Math.max(20, Math.min(window.innerHeight - 20, d.y));
+    });
+}
